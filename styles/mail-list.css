@@ -1,0 +1,232 @@
+@-moz-document url("about:3pane") {
+  #threadTree[rows="thread-card"] {
+    --thw-background: light-dark(#ffffff, #1e1e1e);
+    --thw-foreground: light-dark(#202124, #f5f5f7);
+    --thw-muted: light-dark(#666970, #a5a5aa);
+    --thw-separator: light-dark(#e5e5e8, #37373a);
+    --thw-selection: light-dark(#0074e0, #0076d6);
+    --thw-hover: light-dark(#f3f4f6, #29292c);
+    background: var(--thw-background) !important;
+    color: var(--thw-foreground) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    padding-block: 4px !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout {
+    height: var(--thw-row-height) !important;
+    --read-status-icon: var(--icon-dot);
+    --read-status-new: var(--icon-dot);
+    --read-status-fill: #168bf2 !important;
+    --read-status-stroke: #168bf2 !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout > td {
+    height: var(--thw-row-height) !important;
+    box-sizing: border-box !important;
+    padding: 2px 10px !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout[data-properties~="thread-children"] > td {
+    padding-inline-start: 26px !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-container {
+    grid-template-columns: 10px 2.7em minmax(0, 1fr) !important;
+    column-gap: 8px !important;
+    align-items: start !important;
+    padding: 5px 12px 5px 6px !important;
+    border: 0 !important;
+    border-radius: 11px !important;
+    background: transparent !important;
+    color: var(--thw-foreground) !important;
+    transition: none !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-container::after {
+    content: "" !important;
+    position: absolute !important;
+    inset-inline: calc(2.7em + 32px) 12px !important;
+    inset-block: auto 0 !important;
+    inline-size: auto !important;
+    block-size: 1px !important;
+    border: 0 !important;
+    background: var(--thw-separator) !important;
+    opacity: 1 !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout:hover .card-container {
+    background: var(--thw-hover) !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout.selected .card-container {
+    background: var(--thw-selection) !important;
+    color: white !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout.selected .card-container::after {
+    opacity: 0 !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout.current .card-container {
+    outline: none !important;
+  }
+
+  #threadTree[rows="thread-card"] [is="tree-view-table-body"]:focus-visible > .card-layout.current .card-container {
+    outline: 2px solid var(--thw-selection) !important;
+    outline-offset: 2px !important;
+  }
+
+  #threadTree[rows="thread-card"] .thread-card-column {
+    min-inline-size: 0 !important;
+    gap: 2px !important;
+    padding: 0 !important;
+  }
+
+  #threadTree[rows="thread-card"] .read-status-column {
+    inline-size: 10px !important;
+    padding-block-start: 7px !important;
+  }
+
+  #threadTree[rows="thread-card"] .read-status {
+    inline-size: 8px !important;
+    block-size: 8px !important;
+  }
+
+  #threadTree[rows="thread-card"] .selected .read-status {
+    fill: white !important;
+    stroke: white !important;
+  }
+
+  #threadTree[rows="thread-card"] .thw-avatar {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    inline-size: 2.7em;
+    block-size: 2.7em;
+    border-radius: 50%;
+    background: light-dark(#e2e4e9, #666a75);
+    color: light-dark(#4e5360, #ffffff);
+    font-weight: 500;
+    margin-block-start: 1px;
+    user-select: none;
+  }
+
+  #threadTree[rows="thread-card"] .thw-avatar > img {
+    position: absolute;
+    inset: 0;
+    inline-size: 100% !important;
+    block-size: 100% !important;
+    object-fit: cover;
+    background: inherit;
+  }
+
+  #threadTree[rows="thread-card"][data-thw-hide-avatars] .thw-avatar {
+    display: none !important;
+  }
+
+  #threadTree[rows="thread-card"][data-thw-hide-avatars] .card-container {
+    grid-template-columns: 10px minmax(0, 1fr) !important;
+  }
+
+  #threadTree[rows="thread-card"][data-thw-hide-avatars] .card-container::after {
+    inset-inline-start: 24px !important;
+  }
+
+  #threadTree[rows="thread-card"] .thread-card-row {
+    gap: 5px !important;
+    line-height: 1.4 !important;
+    min-inline-size: 0 !important;
+  }
+
+  #threadTree[rows="thread-card"] .sender {
+    font-size: 1.08em !important;
+    font-weight: 600 !important;
+    padding-inline-start: 0 !important;
+  }
+
+  #threadTree[rows="thread-card"] .date {
+    color: var(--thw-muted) !important;
+    font-size: 0.9em !important;
+    opacity: 1 !important;
+  }
+
+  #threadTree[rows="thread-card"] .tree-button-more {
+    opacity: 0 !important;
+  }
+
+  #threadTree[rows="thread-card"] .card-layout:is(:hover, .selected, :focus-within) .tree-button-more {
+    opacity: 0.8 !important;
+  }
+
+  #threadTree[rows="thread-card"] .thread-card-dynamic-row {
+    grid-template: "subject info button" auto / minmax(0, 1fr) auto auto !important;
+    gap: 5px !important;
+    line-height: 1.4 !important;
+  }
+
+  #threadTree[rows="thread-card"] .thread-card-subject-container {
+    display: flex !important;
+    min-inline-size: 0 !important;
+    padding: 0 !important;
+  }
+
+  #threadTree[rows="thread-card"] .subject {
+    color: inherit !important;
+    font-weight: 400 !important;
+  }
+
+  #threadTree[rows="thread-card"] [data-properties~="unread"] .subject {
+    font-weight: 600 !important;
+  }
+
+  #threadTree[rows="thread-card"] .thread-card-icon-info {
+    gap: 4px !important;
+  }
+
+  #threadTree[rows="thread-card"] .thw-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--thw-preview-lines, 2);
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.4;
+    max-block-size: calc(1.4em * var(--thw-preview-lines, 2));
+    color: var(--thw-muted);
+  }
+
+  #threadTree[rows="thread-card"] .selected :is(.date, .subject, .thw-preview, .thread-replies) {
+    color: white !important;
+  }
+
+  #threadTree[rows="thread-card"] [data-properties~="dummy"] :is(.thw-avatar, .thw-preview) {
+    display: none !important;
+  }
+
+  #threadTree[rows="thread-card"] [data-properties~="dummy"] .card-container {
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: center !important;
+  }
+
+  #threadTree[rows="thread-card"] [data-properties~="dummy"] .thread-card-dynamic-row {
+    grid-template: "subject button" auto "sort sort" auto / minmax(0, 1fr) auto !important;
+  }
+
+  @media (prefers-contrast) {
+    #threadTree[rows="thread-card"] {
+      --thw-background: Canvas;
+      --thw-foreground: CanvasText;
+      --thw-muted: CanvasText;
+      --thw-separator: CanvasText;
+      --thw-selection: SelectedItem;
+    }
+
+    #threadTree[rows="thread-card"] .card-layout.selected .card-container,
+    #threadTree[rows="thread-card"] .selected :is(.date, .subject, .thw-preview, .thread-replies) {
+      color: SelectedItemText !important;
+    }
+  }
+}

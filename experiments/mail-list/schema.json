@@ -1,0 +1,47 @@
+[
+  {
+    "namespace": "mailList",
+    "functions": [
+      {
+        "name": "start",
+        "type": "function",
+        "async": true,
+        "parameters": [],
+        "description": "Style native Thunderbird message cards until the extension is disabled."
+      },
+      {
+        "name": "getShowAvatars",
+        "type": "function",
+        "async": true,
+        "parameters": [],
+        "returns": { "type": "boolean" }
+      },
+      {
+        "name": "setShowAvatars",
+        "type": "function",
+        "async": true,
+        "parameters": [{ "name": "showAvatars", "type": "boolean" }]
+      },
+      {
+        "name": "getPreviewLines",
+        "type": "function",
+        "async": true,
+        "parameters": [],
+        "returns": { "type": "integer", "minimum": 1, "maximum": 4 }
+      },
+      {
+        "name": "setPreviewLines",
+        "type": "function",
+        "async": true,
+        "parameters": [{ "name": "previewLines", "type": "integer", "minimum": 1, "maximum": 4 }]
+      }
+    ],
+    "events": [
+      {
+        "name": "onShowAvatarsChanged",
+        "type": "function",
+        "parameters": [{ "name": "showAvatars", "type": "boolean" }]
+      }
+    ]
+  }
+]

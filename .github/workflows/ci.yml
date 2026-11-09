@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check and build XPI
+        run: scripts/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: thwunderlist-xpi
+          path: dist/*.xpi
+          if-no-files-found: error

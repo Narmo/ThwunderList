@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ThwunderList settings</title>
+  <link rel="icon" href="../icons/thwunderlist.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="chrome://global/skin/in-content/common.css">
+  <link rel="stylesheet" href="options.css">
+  <script src="options.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>ThwunderList</h1>
+    <fieldset id="layoutSettings" disabled>
+      <legend>Message list</legend>
+      <label class="checkbox-row">
+        <input id="showAvatars" type="checkbox" disabled aria-describedby="avatarHelp">
+        Show sender avatars
+      </label>
+      <p id="avatarHelp" class="description checkbox-description">
+        Contact photos when available, initials otherwise.
+      </p>
+      <label class="setting-row">
+        <span>Preview lines:</span>
+        <input id="previewLines" type="number" min="1" max="4" step="1" required>
+      </label>
+    </fieldset>
+    <p id="status" class="description" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>
