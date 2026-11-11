@@ -153,15 +153,15 @@ The build script checks JavaScript and JSON syntax and packages only runtime
 files and license notices. CI runs these checks, not Thunderbird UI tests.
 
 Runtime checks were performed separately in isolated macOS Thunderbird 159
-profiles with synthetic local mail and a local IMAP server. Coverage includes
+and 160 profiles with synthetic local mail and a local IMAP server. Coverage includes
 plain-text and HTML previews, encoded bodies, unread flags, address-book
 photos, settings, row sizing, scrolling, multiple tabs/windows and cleanup
 on disable or uninstall.
 
 ## Limits
 
-- The add-on uses Thunderbird 159's internal card API. Later versions are
-  allowed by the manifest but may require changes.
+- The add-on uses Thunderbird's internal card API, checked on 159 and 160.
+  Later versions are allowed by the manifest but may require changes.
 - Other platforms, external mail providers and screen-reader output have not
   been tested.
 - Empty or encrypted messages may have no preview.
