@@ -7,7 +7,8 @@ Mail.app-style message cards for Thunderbird 159.0+.
 - **Compact Cards View** with prominent senders, subjects, dates and one to four
   lines of body text. Row height follows the preview line count and font size.
 - **Contact photos and initials** from local address books, with an option to
-  hide avatars.
+  hide avatars. Optional remote avatars use Gravatar and DuckDuckGo domain icons,
+  without API keys.
 - **Native mail controls**: threading, sorting, selection, context menus,
   tags and message actions remain available.
 - **Light and dark palettes**, rounded selection and inset separators.
@@ -29,16 +30,57 @@ finish after scrolling away. Offline mode uses local bodies and cached excerpts.
 ## Mail safety
 
 Preview loading does not mark messages read, alter message bodies or load
-remote images. Attachment contents are not used as preview text. Extracted
+images from message content. Attachment contents are not used as preview text. Extracted
 text is inserted as text, never rendered as HTML.
 
-Avatars use Thunderbird's address-book lookup, including secondary email
-addresses. Only local photo files and embedded images are loaded; remote
-photo URLs are ignored. Missing or broken photos fall back to initials.
-Sent folders use the first recipient's photo. Address-book entries are never
-modified, and contact edits refresh the list through Thunderbird's own updates.
+Avatars prefer Thunderbird's address-book lookup, including secondary email
+addresses. Only local photo files and embedded images are accepted from contacts;
+remote contact photo URLs are ignored. Sent folders use the first recipient's
+photo. Address-book entries are never modified, and contact edits refresh the
+list through Thunderbird's own updates.
 
-No third-party services, analytics or remote avatar providers are used.
+### Optional remote avatars
+
+**Disabled by default.** Enable **Fetch missing avatars from the internet** in
+the add-on settings to try [Gravatar](https://docs.gravatar.com/sdk/images/), then
+[DuckDuckGo domain icons](https://icons.duckduckgo.com/ip3/duckduckgo.com.ico) when
+a local photo is missing or broken. Unavailable images leave the initials intact.
+No account or API key is needed. DuckDuckGo's public icon endpoint is not a
+guaranteed API and may change or stop working.
+
+Gravatar receives a SHA-256 hash of the trimmed, lowercased email address.
+DuckDuckGo receives the registrable domain (for example, `news.example.co.uk`
+becomes `example.co.uk`), not the full email address. Common personal-mail
+providers such as Gmail, Outlook and Yahoo are excluded from domain-icon
+lookups; this list is not exhaustive. Both services receive your IP address.
+**Email hashes are not anonymous.**
+
+Remote avatars appear only for incoming messages that your mail provider
+marked as authenticated: the topmost `Authentication-Results` header must show
+DMARC pass for the From domain, or DKIM pass aligned with it. Gmail, Outlook,
+Fastmail and most filtering servers add this header. Messages without it, and
+messages not stored locally (for example IMAP folders not synchronised for
+offline use), keep initials. If your server adds no such header, a sender can
+forge one, so the check is only as good as your provider. Authentication proves
+the domain, not the person: a logo or photo still does not vouch for the content.
+Sent messages need no check, because you chose the recipients.
+
+Messages marked as junk, or stored in a Junk folder, are never looked up:
+DuckDuckGo may fetch the icon from the sender's own site, which would tell a
+sender who controls a rarely seen domain that the message was listed.
+Addresses without a public domain suffix, such as `corp.internal`, are never
+sent to either service.
+
+Lookups run one at a time per mail tab, only for visible cards while avatars
+are shown and Thunderbird is online. Requests omit cookies and referrers,
+reject redirects, time out after five seconds per provider, and accept only
+raster images up to 128 KiB, between 32×32 and 512×512 pixels. Fetched images are kept for 7 days and misses for 1 day, at most 256 entries, in
+`thwunderlist-avatars.json` in the profile's local cache directory, so they
+survive restarts; requests themselves bypass Thunderbird's HTTP cache. Hiding
+avatars, disabling remote lookups, or disabling, updating or removing the add-on
+deletes that file. Going offline aborts pending requests. A request already sent
+cannot be undone.
+No analytics are used.
 
 ## Install
 
@@ -64,6 +106,8 @@ and computer. The implementation is in `experiments/mail-list/api.js`.
 - **Show sender avatars** — **View → Show sender avatars**, directly below
   **Display Attachments Inline**, or **ThwunderList → Preferences/Options**
   in the Add-ons Manager. Enabled by default; both controls stay synchronized.
+- **Fetch missing avatars from the internet** — opt-in, default off, in the
+  add-on settings. Local contact photos always take priority.
 - **Preview lines** — 1–4, default 2, in the add-on settings. Row height adjusts
   automatically to the line count and font size.
 

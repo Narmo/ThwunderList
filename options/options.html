@@ -19,7 +19,17 @@
         Show sender avatars
       </label>
       <p id="avatarHelp" class="description checkbox-description">
-        Contact photos when available, initials otherwise.
+        Local contact photos first, initials when no image is available.
+      </p>
+      <label class="checkbox-row">
+        <input id="remoteAvatars" type="checkbox" disabled aria-describedby="remoteAvatarHelp">
+        Fetch missing avatars from the internet
+      </label>
+      <p id="remoteAvatarHelp" class="description checkbox-description">
+        Off by default. When avatars are shown, try Gravatar, then DuckDuckGo domain icons.
+        Gravatar receives email hashes; DuckDuckGo receives email domains. Both see your IP address.
+        Hashes are not anonymous. Incoming messages need a DMARC or aligned DKIM pass from your mail
+        provider; junk is never looked up. A logo proves the domain, not the content. No API key is needed.
       </p>
       <label class="setting-row">
         <span>Preview lines:</span>

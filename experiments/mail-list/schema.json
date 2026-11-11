@@ -23,6 +23,19 @@
         "parameters": [{ "name": "showAvatars", "type": "boolean" }]
       },
       {
+        "name": "getRemoteAvatars",
+        "type": "function",
+        "async": true,
+        "parameters": [],
+        "returns": { "type": "boolean" }
+      },
+      {
+        "name": "setRemoteAvatars",
+        "type": "function",
+        "async": true,
+        "parameters": [{ "name": "enabled", "type": "boolean" }]
+      },
+      {
         "name": "getPreviewLines",
         "type": "function",
         "async": true,
@@ -41,6 +54,11 @@
         "name": "onShowAvatarsChanged",
         "type": "function",
         "parameters": [{ "name": "showAvatars", "type": "boolean" }]
+      },
+      {
+        "name": "onRemoteAvatarsChanged",
+        "type": "function",
+        "parameters": [{ "name": "enabled", "type": "boolean" }]
       }
     ]
   }

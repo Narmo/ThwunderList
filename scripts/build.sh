@@ -6,6 +6,7 @@ cd "$(dirname "$0")/.."
 node --check background.js
 node --check experiments/mail-list/api.js
 node --check options/options.js
+node scripts/check-auth.mjs
 python3 -m json.tool experiments/mail-list/schema.json > /dev/null
 version=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
 out="dist/thwunderlist-$version.xpi"

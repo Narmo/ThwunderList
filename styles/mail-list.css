@@ -82,9 +82,18 @@
     padding: 0 !important;
   }
 
+  /* The dot centres on the avatar, or on the sender line when avatars are hidden. */
   #threadTree[rows="thread-card"] .read-status-column {
     inline-size: 10px !important;
-    padding-block-start: 7px !important;
+    block-size: 2.7em !important;
+    margin-block-start: 1px !important;
+    justify-content: center !important;
+    padding-block: 0 !important;
+  }
+
+  #threadTree[rows="thread-card"][data-thw-hide-avatars] .read-status-column {
+    block-size: calc(1.08em * 1.4) !important;
+    margin-block-start: 0 !important;
   }
 
   #threadTree[rows="thread-card"] .read-status {
@@ -102,10 +111,14 @@
     overflow: hidden;
     display: grid;
     place-items: center;
+    --thw-avatar-ground: light-dark(#e2e4e9, #666a75);
+    box-sizing: border-box;
     inline-size: 2.7em;
     block-size: 2.7em;
+    /* Outlines photos and white logos; invisible around initials. */
+    border: 0.5px solid var(--thw-avatar-ground);
     border-radius: 50%;
-    background: light-dark(#e2e4e9, #666a75);
+    background: var(--thw-avatar-ground);
     color: light-dark(#4e5360, #ffffff);
     font-weight: 500;
     margin-block-start: 1px;
@@ -119,6 +132,14 @@
     block-size: 100% !important;
     object-fit: cover;
     background: inherit;
+  }
+
+  /* Domain logos sit whole inside the circle, on the light ground they are drawn for. */
+  #threadTree[rows="thread-card"] .thw-avatar > img.thw-logo {
+    box-sizing: border-box;
+    padding: 15%;
+    object-fit: contain;
+    background: white;
   }
 
   #threadTree[rows="thread-card"][data-thw-hide-avatars] .thw-avatar {
