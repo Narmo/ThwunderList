@@ -108,8 +108,10 @@ and computer. The implementation is in `experiments/mail-list/api.js`.
   in the Add-ons Manager. Enabled by default; both controls stay synchronized.
 - **Fetch missing avatars from the internet** — opt-in, default off, in the
   add-on settings. Local contact photos always take priority.
-- **Show account color indicators** — enabled by default, in the add-on settings.
-  Uncheck to hide the colored markers beside senders in Cards View. Account colors
+- **Show account color indicators** — **View → Show account color indicators**,
+  below **Show sender avatars**, or the add-on settings. Enabled by default;
+  both controls stay synchronized. Uncheck to hide the colored markers beside
+  senders in Cards View. Account colors
   in the folder sidebar and Table View are unchanged.
 - **Preview lines** — 1–4, default 2, in the add-on settings. Row height adjusts
   automatically to the line count and font size.

@@ -155,12 +155,7 @@ this.mailList = class extends ExtensionCommon.ExtensionAPI {
         getShowAvatars: async () => Services.prefs.getBoolPref(AVATAR_PREF, true),
         setShowAvatars: async showAvatars => this.setShowAvatars(showAvatars),
         getShowAccountColors: async () => Services.prefs.getBoolPref(ACCOUNT_COLORS_PREF, true),
-        setShowAccountColors: async showAccountColors => {
-          Services.prefs.setBoolPref(ACCOUNT_COLORS_PREF, showAccountColors);
-          for (const window of this.panes?.keys() ?? []) {
-            window.threadTree.toggleAttribute("data-thw-hide-account-colors", !showAccountColors);
-          }
-        },
+        setShowAccountColors: async showAccountColors => this.setShowAccountColors(showAccountColors),
         getRemoteAvatars: async () => Services.prefs.getBoolPref(REMOTE_AVATAR_PREF, false),
         setRemoteAvatars: async enabled => {
           Services.prefs.setBoolPref(REMOTE_AVATAR_PREF, enabled);
@@ -406,6 +401,16 @@ this.mailList = class extends ExtensionCommon.ExtensionAPI {
     }
   }
 
+  setShowAccountColors(showAccountColors) {
+    Services.prefs.setBoolPref(ACCOUNT_COLORS_PREF, showAccountColors);
+    for (const window of this.panes?.keys() ?? []) {
+      window.threadTree.toggleAttribute("data-thw-hide-account-colors", !showAccountColors);
+    }
+    for (const { accountColorsItem } of this.menus?.values() ?? []) {
+      accountColorsItem.toggleAttribute("checked", showAccountColors);
+    }
+  }
+
   addViewMenu(window) {
     if (this.menus.has(window)) {
       return;
@@ -423,12 +428,22 @@ this.mailList = class extends ExtensionCommon.ExtensionAPI {
       this.setShowAvatars(!Services.prefs.getBoolPref(AVATAR_PREF, true));
     });
     anchor.after(item);
+    const accountColorsItem = window.document.createXULElement("menuitem");
+    accountColorsItem.id = "thwunderlist-show-account-colors";
+    accountColorsItem.setAttribute("type", "checkbox");
+    accountColorsItem.setAttribute("label", "Show account color indicators");
+    accountColorsItem.toggleAttribute("checked", Services.prefs.getBoolPref(ACCOUNT_COLORS_PREF, true));
+    accountColorsItem.addEventListener("command", () => {
+      this.setShowAccountColors(!Services.prefs.getBoolPref(ACCOUNT_COLORS_PREF, true));
+    });
+    item.after(accountColorsItem);
     const cleanup = () => {
       item.remove();
+      accountColorsItem.remove();
       window.removeEventListener("unload", cleanup);
       this.menus.delete(window);
     };
-    this.menus.set(window, { item, cleanup });
+    this.menus.set(window, { item, accountColorsItem, cleanup });
     window.addEventListener("unload", cleanup, { once: true });
   }
 
