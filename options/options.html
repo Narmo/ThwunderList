@@ -31,6 +31,13 @@
         Hashes are not anonymous. Incoming messages need a DMARC or aligned DKIM pass from your mail
         provider; junk is never looked up. A logo proves the domain, not the content. No API key is needed.
       </p>
+      <label class="checkbox-row">
+        <input id="showAccountColors" type="checkbox" disabled aria-describedby="accountColorsHelp">
+        Show account color indicators
+      </label>
+      <p id="accountColorsHelp" class="description checkbox-description">
+        Colored markers next to senders in unified folders.
+      </p>
       <label class="setting-row">
         <span>Preview lines:</span>
         <input id="previewLines" type="number" min="1" max="4" step="1" required>

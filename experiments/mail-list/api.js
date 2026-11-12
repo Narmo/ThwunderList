@@ -10,6 +10,7 @@ var { MsgHdrToMimeMessage } = ChromeUtils.importESModule(
 var { JSONFile } = ChromeUtils.importESModule("resource://gre/modules/JSONFile.sys.mjs");
 
 const AVATAR_PREF = "extensions.thwunderlist.showAvatars";
+const ACCOUNT_COLORS_PREF = "extensions.thwunderlist.showAccountColors";
 const REMOTE_AVATAR_PREF = "extensions.thwunderlist.remoteAvatars";
 // shortcut: common personal-mail domains only; extend when another provider is reported.
 const PERSONAL_MAIL_DOMAINS = new Set([
@@ -153,6 +154,13 @@ this.mailList = class extends ExtensionCommon.ExtensionAPI {
         start: () => this.start(context.extension),
         getShowAvatars: async () => Services.prefs.getBoolPref(AVATAR_PREF, true),
         setShowAvatars: async showAvatars => this.setShowAvatars(showAvatars),
+        getShowAccountColors: async () => Services.prefs.getBoolPref(ACCOUNT_COLORS_PREF, true),
+        setShowAccountColors: async showAccountColors => {
+          Services.prefs.setBoolPref(ACCOUNT_COLORS_PREF, showAccountColors);
+          for (const window of this.panes?.keys() ?? []) {
+            window.threadTree.toggleAttribute("data-thw-hide-account-colors", !showAccountColors);
+          }
+        },
         getRemoteAvatars: async () => Services.prefs.getBoolPref(REMOTE_AVATAR_PREF, false),
         setRemoteAvatars: async enabled => {
           Services.prefs.setBoolPref(REMOTE_AVATAR_PREF, enabled);
@@ -180,6 +188,17 @@ this.mailList = class extends ExtensionCommon.ExtensionAPI {
             };
             Services.prefs.addObserver(AVATAR_PREF, observer);
             return () => Services.prefs.removeObserver(AVATAR_PREF, observer);
+          },
+        }).api(),
+        onShowAccountColorsChanged: new ExtensionCommon.EventManager({
+          context,
+          name: "mailList.onShowAccountColorsChanged",
+          register: fire => {
+            const observer = {
+              observe: () => fire.async(Services.prefs.getBoolPref(ACCOUNT_COLORS_PREF, true)),
+            };
+            Services.prefs.addObserver(ACCOUNT_COLORS_PREF, observer);
+            return () => Services.prefs.removeObserver(ACCOUNT_COLORS_PREF, observer);
           },
         }).api(),
         onRemoteAvatarsChanged: new ExtensionCommon.EventManager({
@@ -818,6 +837,7 @@ this.mailList = class extends ExtensionCommon.ExtensionAPI {
         threadTree.style.removeProperty("--thw-row-height");
         threadTree.style.removeProperty("--thw-preview-lines");
         threadTree.removeAttribute("data-thw-hide-avatars");
+        threadTree.removeAttribute("data-thw-hide-account-colors");
         threadPane.updateThreadItemSize();
         // Remove injected nodes before shutdown, not after the async resize.
         threadTree.reset();
@@ -828,6 +848,7 @@ this.mailList = class extends ExtensionCommon.ExtensionAPI {
     window.addEventListener("unload", cleanup, { once: true });
     window.windowUtils.loadSheet(this.styleURI, window.windowUtils.USER_SHEET);
     threadTree.toggleAttribute("data-thw-hide-avatars", !Services.prefs.getBoolPref(AVATAR_PREF, true));
+    threadTree.toggleAttribute("data-thw-hide-account-colors", !Services.prefs.getBoolPref(ACCOUNT_COLORS_PREF, true));
     Card.prototype.fillRow = fill;
     threadPane.densityChange = density;
     threadTree.addEventListener("scroll", schedulePreviews);

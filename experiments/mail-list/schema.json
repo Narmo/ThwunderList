@@ -23,6 +23,19 @@
         "parameters": [{ "name": "showAvatars", "type": "boolean" }]
       },
       {
+        "name": "getShowAccountColors",
+        "type": "function",
+        "async": true,
+        "parameters": [],
+        "returns": { "type": "boolean" }
+      },
+      {
+        "name": "setShowAccountColors",
+        "type": "function",
+        "async": true,
+        "parameters": [{ "name": "showAccountColors", "type": "boolean" }]
+      },
+      {
         "name": "getRemoteAvatars",
         "type": "function",
         "async": true,
@@ -54,6 +67,11 @@
         "name": "onShowAvatarsChanged",
         "type": "function",
         "parameters": [{ "name": "showAvatars", "type": "boolean" }]
+      },
+      {
+        "name": "onShowAccountColorsChanged",
+        "type": "function",
+        "parameters": [{ "name": "showAccountColors", "type": "boolean" }]
       },
       {
         "name": "onRemoteAvatarsChanged",

@@ -160,6 +160,10 @@
     min-inline-size: 0 !important;
   }
 
+  #threadTree[rows="thread-card"][data-thw-hide-account-colors] .account-indicator {
+    display: none !important;
+  }
+
   #threadTree[rows="thread-card"] .sender {
     font-size: 1.08em !important;
     font-weight: 600 !important;

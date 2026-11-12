@@ -1,5 +1,6 @@
 const checkbox = document.getElementById("showAvatars");
 const remoteAvatars = document.getElementById("remoteAvatars");
+const accountColors = document.getElementById("showAccountColors");
 const previewLines = document.getElementById("previewLines");
 const layoutSettings = document.getElementById("layoutSettings");
 const status = document.getElementById("status");
@@ -7,16 +8,19 @@ let savedPreviewLines;
 
 async function loadSettings() {
   try {
-    const [showAvatars, lines, remote] = await Promise.all([
+    const [showAvatars, lines, remote, showAccountColors] = await Promise.all([
       browser.mailList.getShowAvatars(),
       browser.mailList.getPreviewLines(),
       browser.mailList.getRemoteAvatars(),
+      browser.mailList.getShowAccountColors(),
     ]);
     checkbox.checked = showAvatars;
     remoteAvatars.checked = remote;
+    accountColors.checked = showAccountColors;
     previewLines.value = lines;
     savedPreviewLines = lines;
     remoteAvatars.disabled = false;
+    accountColors.disabled = false;
     checkbox.disabled = false;
     layoutSettings.disabled = false;
   } catch (error) {
@@ -53,6 +57,20 @@ remoteAvatars.addEventListener("change", async () => {
   }
 });
 
+accountColors.addEventListener("change", async () => {
+  accountColors.disabled = true;
+  try {
+    await browser.mailList.setShowAccountColors(accountColors.checked);
+    status.textContent = "Saved.";
+  } catch (error) {
+    accountColors.checked = !accountColors.checked;
+    status.textContent = "Could not save the setting. Please try again.";
+    console.error(error);
+  } finally {
+    accountColors.disabled = false;
+  }
+});
+
 async function savePreviewLines() {
   if (!previewLines.reportValidity()) {
     return;
@@ -81,6 +99,11 @@ browser.mailList.onShowAvatarsChanged.addListener(showAvatars => {
 
 browser.mailList.onRemoteAvatarsChanged.addListener(enabled => {
   remoteAvatars.checked = enabled;
+  status.textContent = "";
+});
+
+browser.mailList.onShowAccountColorsChanged.addListener(showAccountColors => {
+  accountColors.checked = showAccountColors;
   status.textContent = "";
 });
 
