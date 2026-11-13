@@ -205,6 +205,12 @@
     font-weight: 600 !important;
   }
 
+  #threadTree[rows="thread-card"] .card-layout:not([data-properties~="dummy"]) .subject:empty::before {
+    content: "No subject";
+    font-weight: 400 !important;
+    font-style: italic !important;
+  }
+
   #threadTree[rows="thread-card"] .thread-card-icon-info {
     gap: 4px !important;
   }
