@@ -161,11 +161,13 @@ Runtime checks were performed separately in isolated macOS Thunderbird 159
 and 160 profiles with synthetic local mail and a local IMAP server. Coverage includes
 plain-text and HTML previews, encoded bodies, unread flags, address-book
 photos, settings, row sizing, scrolling, multiple tabs/windows and cleanup
-on disable or uninstall.
+on disable or uninstall. On Thunderbird 161 previews, initials, the View menu
+toggles, preview lines, table view, new tabs and disable/enable cleanup were
+checked live with synthetic local mail, also with the other add-ons enabled.
 
 ## Limits
 
-- The add-on uses Thunderbird's internal card API, checked on 159 and 160.
+- The add-on uses Thunderbird's internal card API, checked on 159, 160 and 161.
   Later versions are allowed by the manifest but may require changes.
 - Other platforms, external mail providers and screen-reader output have not
   been tested.
